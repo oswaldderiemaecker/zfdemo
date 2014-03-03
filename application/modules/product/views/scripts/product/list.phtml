@@ -1,0 +1,38 @@
+<?php $this->headTitle('Product listing') ?>
+
+<?php if (!empty ($this->products)): ?>
+    <table class="table table-condensed">
+        <tr>
+            <th class="right">#</th>
+            <th class="left">Title</th>
+            <th class="left">Image</th>
+            <th class="right">Price</th>
+            <th class="right">Updated</th>
+            <th class="center"><a href="<?php echo $this->url(array (
+                    'module' => 'product',
+                    'controller' => 'product',
+                    'action' => 'edit',
+                    'id' => 0,
+                ), null, true) ?>">+</a></th>
+        </tr>
+
+        <?php foreach ($this->products as $product): ?>
+
+            <tr>
+                <td class="right"><?php echo $this->escape($product->getId()) ?></td>
+                <td class="left"><?php echo $this->escape($product->getTitle()) ?></td>
+                <td class="left"><img src="<?php echo $this->escape($product->getImage()) ?>" width="24" height="24" alt="<?php echo $this->escape($product->getTitle()) ?>"</td>
+                <td class="right"><?php echo $this->escape($product->getPrice()) ?></td>
+                <td class="right"><?php echo $this->escape($product->getModified()->format('Y-m-d')) ?></td>
+                <td class="center"><a href="<?php echo $this->url(array (
+                        'module' => 'product',
+                        'controller' => 'product',
+                        'action' => 'edit',
+                        'id' => $product->getId(),
+                    ), null, true) ?>">[edit]</a></td>
+            </tr>
+
+        <?php endforeach ?>
+
+    </table>
+<?php endif; ?>

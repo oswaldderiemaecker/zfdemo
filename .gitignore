@@ -1,0 +1,6 @@
+.idea/
+library/In2it
+library/Zend
+vendor/*/
+vendor/autoload.php
+composer.lock

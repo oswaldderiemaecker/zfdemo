@@ -1,0 +1,36 @@
+<?php $this->headTitle('List of all registered users') ?>
+
+<?php if (!empty ($this->users)): ?>
+<table class="table table-condensed">
+    <tr>
+        <th class="right">#</th>
+        <th class="left">Name</th>
+        <th class="left">Email</th>
+        <th class="right">Since</th>
+        <th class="center"><a href="<?php echo $this->url(array (
+                'module' => 'user',
+                'controller' => 'user',
+                'action' => 'edit',
+                'id' => 0,
+            ), null, true) ?>">+</a></th>
+    </tr>
+
+    <?php foreach ($this->users as $user): ?>
+
+        <tr>
+            <td class="right"><?php echo $this->escape($user->getId()) ?></td>
+            <td class="left"><?php echo $this->escape($user->getName()) ?></td>
+            <td class="left"><?php echo $this->escape($user->getEmail()) ?></td>
+            <td class="right"><?php echo $this->escape($user->getCreated()->format('Y-m-d')) ?></td>
+            <td class="center"><a href="<?php echo $this->url(array (
+                    'module' => 'user',
+                    'controller' => 'user',
+                    'action' => 'edit',
+                    'id' => $user->getId(),
+                ), null, true) ?>">[edit]</a></td>
+        </tr>
+
+    <?php endforeach ?>
+
+</table>
+<?php endif; ?>
