@@ -79,6 +79,72 @@ Example: your web server's group is www-data, than you need to adjust the direct
 
 For the example of this application we have created two modules "product" and "user", where the first takes care of all product related things, and the latter handles users.
 
+### Setting up REST access
+
+The goal is to implement a RESTful access to the user and product modules, but we want to configure it through our modules and not through an application configuration.
+
+#### 1. We need to add two "resource" plugins
+
+A resource plugin allows you to define a resource yourself, something that can be loaded at bootstrap and not on call (like a controller action plugin). We want our routes to be loaded at bootstrap, but we want each module to define routing details by itself (so progressive API building can be done).
+
+First "Modulesetup" plugin allows us to define configurations per module by using a `configs/module.ini` per module.
+Second "Rest" plugin allows us to load any routing defined in our `configs/module.ini` and add them to the default routing table.
+
+#### 2. We need to add our module routing
+
+In our "user" module, we have created a new `configs/module.ini` configuration file and we add the following in it:
+
+    [production]
+        
+    resources.rest.modules[] = user
+    
+    resources.rest.routes.user-collection.route = "#^v1/user$#"
+    resources.rest.routes.user-collection.module = "user"
+    resources.rest.routes.user-collection.controller = "user-collection"
+    
+    resources.rest.routes.user-entity.route = "#^v1/user/(?P<id>[0-9]+)$#"
+    resources.rest.routes.user-entity.module = "user"
+    resources.rest.routes.user-entity.controller = "user-entity"
+    
+    [staging: production]
+    [testing: production]
+    [development: production]
+
+#### 3. We need 2 new controllers
+
+Using `Zend_Tool` it's easy to create 2 new controllers for our user module.
+
+    $ zf create controller userCollection 1 user
+    $ zf create controller userEntity 1 user
+
+In each controller we need to have "get", "post", "put", "delete" and "head" actions, so again we use `Zend_Tool`:
+
+    $ zf create action get userCollection 1 user
+    $ zf create action post userCollection 1 user
+    $ zf create action put userCollection 1 user
+    $ zf create action delete userCollection 1 user
+    $ zf create action head userCollection 1 user
+    
+    $ zf create action get userEntity 1 user
+    $ zf create action post userEntity 1 user
+    $ zf create action put userEntity 1 user
+    $ zf create action delete userEntity 1 user
+    $ zf create action head userEntity 1 user
+
+#### 4. Change controllers to Zend_Rest_Controller
+
+Now our controllers are extending `Zend_Controller_Action` but we need to convert them into `Zend_Rest_Controller`. So we change them.
+
+Also provide functionality in the get action of collection and entity controller to retrieve data from the databases. Don't forget that we've build services to facilitate these operations.
+
+#### 5. Testing it
+
+Point your browser to [zfdemo.local/user](http://zfdemo.local/user) and [zfdemo.local/user/1](http://zfdemo.local/user/1) to see if we can fetch our collections.
+
+#### 6. Your turn
+
+Extend these functionalities so you can provide easy REST CRUD functionality on our product and user data.
+
 ## Copyright and warranties
 
 [In2it](http://www.in2it.be) provides this code "as-is" and provides no warranties. **THIS IS NOT PRODUCTION CODE!!!**.
