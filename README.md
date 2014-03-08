@@ -143,7 +143,20 @@ Point your browser to [zfdemo.local/user](http://zfdemo.local/user) and [zfdemo.
 
 #### 6. Your turn
 
-Extend these functionalities so you can provide easy REST CRUD functionality on our product and user data.
+Extend this functionality so you can provide easy REST CRUD functionality on our product and user data.
+
+## Bootstrapping in Apigility
+
+Now that we have tasted of building REST API's, we can continue building REST constructs, but it would make more sense to use proper tools to build REST interfaces using existing code base.
+
+In our example here we're using [Apigility](http://apigility.org) as this is a full REST management tool based on [Zend Framework 2](http://framework.zend.com).
+
+The challenge here is to set up Apigility in such a way that it "bootstraps" this demo application so all models and services build in this application are autoloaded, without actually running this ZF1 application.
+
+To define our goals, we need to address the following challenges:
+
+* Ensure there's no conflict in **APPLICATION_PATH** and **APPLICATION_ENV** between ZF1 and ZF2
+* Ensure classes are loaded from ZF1 into ZF2
 
 ## Copyright and warranties
 
