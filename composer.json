@@ -2,5 +2,10 @@
     "require": {
         "zendframework/zendframework1": "1.12.3",
         "fzaninotto/faker": "~1.4"
+    },
+    "require-dev": {
+        "zendframework/zendframework1": "1.12.3",
+        "fzaninotto/faker": "~1.4",
+        "phpunit/phpunit": "~4.1"
     }
 }
